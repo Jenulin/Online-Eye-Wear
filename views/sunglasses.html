@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eyewear Shop</title>
+
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="head">
+        <div class="logo">
+            <img src="logo.png" alt="Logo">
+        </div>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="eyeglasses.html">Eyeglasses</a>
+            <a href="sunglasses.html">Sunglasses</a>
+            <a href="kids.html">Kids Glasses</a>
+            
+            <a href="Computer.html">Computer Glasses</a>
+            <div class="dropdown">
+                <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                  <a href="Burberry.html">Burberry</a>
+                  <a href="Catier.html">Catier</a>
+                  <a href="fastrack.html">Fastrack</a>
+                </div>
+              </div>
+            
+        </div>
+        <div class="nav_r">
+            <button class="signbtn">
+                <i class="fa-solid fa-user"></i>
+                <a href="signin.html">Sign In</a>
+            </button>
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <i class="fa-solid fa-heart"></i>
+            <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+    </div>
+    <h1>Eyeglasses</h1>
+    <select id="subcategory-filter">
+        <option value="all">all</option>
+        <option value="Men">Men</option>
+        <option value="women">Women</option>
+    </select>
+    <div class="prod-page" id="prod-page">
+        <div class="products" id="products"></div>
+    </div>
+    <div id="contact" class="contact">
+        <div class="links">
+            <ul>
+                <li style="font-weight: 800; color:#921A40;">EYEGLASSES</li>
+                <li><a href="">Men</a></li>
+                <li><a href="">Women</a></li>
+                <li><a href="">Kids</a></li>
+                <li><a href="">Fastrack</a></li>
+                <li><a href="">Titan</a></li>
+                <li><a href="">Rimless</a></li>
+            </ul>
+            <ul>
+                <li style="font-weight: 800; color:#921A40;">SUNGLASSES</li>
+                <li><a href="">Men</a></li>
+                <li><a href="">Women</a></li>
+                <li><a href="">Fastrack</a></li>
+                <li><a href="">Rimless</a></li>
+            </ul>
+            <ul>
+                <li style="font-weight: 800; color:#921A40;">CONTACT LENSES</li>
+                <li><a href="">Bausch & Lomb</a></li>
+                <li><a href="">Johnson & Johnson</a></li>
+                <li><a href="">Alcon</a></li>
+            </ul>
+            <ul>
+                <li style="font-weight:800; color:#921A40;">ABOUT CRYSTAL OPTICS</li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="">Customer Reviews</a></li>
+            </ul>
+        </div>
+        <h3>Find us on any of these platforms</h3>
+        <div class="icons">
+            <i class="fa-brands fa-instagram"></i>
+            <i class="fa-brands fa-linkedin-in"></i>
+            <i class="fa-brands fa-x-twitter"></i>
+            <i class="fa-brands fa-facebook-f"></i>
+        </div>
+    </div>
+
+    <script>
+        function display() {
+            // Fetch product data and display it
+            fetch('/products')
+                .then(response => response.json())
+                .then(products => {
+                    const productsDiv = document.getElementById('products');
+                    productsDiv.innerHTML = ""; // Clear previous products
+                    
+                    const filter = document.getElementById('subcategory-filter').value.toLowerCase(); // Get selected filter
+    
+                    products.forEach(product => {
+                        if (product.category === "Sunglasses") {
+                            // Check if the filter matches or if "all" is selected
+                            if (filter === 'all' || product.subcategory.toLowerCase() === filter) {
+                                const productDiv = document.createElement('div');
+                                const descDiv = document.createElement('div');
+                                const likeDiv = document.createElement('div');
+                                const categoryDiv = document.createElement('div');
+    
+                                productDiv.className = 'product';
+                                descDiv.className = 'desc';
+                                likeDiv.className = 'like';
+                                categoryDiv.className = 'img-category';
+    
+                                productDiv.innerHTML = `
+                                    <img src="/images/${product.imageURL}" alt="${product.brand} Eyeglasses">
+                                `;
+    
+                                descDiv.innerHTML = `
+                                    <b>${product.brand}</b>
+                                    <b>Rs.${product.price}</b>
+                                `;
+    
+                                likeDiv.innerHTML = `
+                                    <a href="#" class="like-button"><i class="fa-regular fa-heart"></i></a>
+                                    
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                  
+                                `;
+    
+                                categoryDiv.innerHTML = `
+                                    <p>${product.description}</p>
+                                `;
+    
+                                // Append description and like sections to the product div
+                                productDiv.appendChild(likeDiv);
+                                productDiv.appendChild(descDiv);
+                                productDiv.appendChild(categoryDiv);
+                                productsDiv.appendChild(productDiv);
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching products:', error));
+        }
+    
+        // Add an event listener to the dropdown to call display() on change
+        document.getElementById('subcategory-filter').addEventListener('change', display);
+    
+        // Initial call to display products
+        display();
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Optics - Add to Cart</title>
+    <style>
+        .product {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+        }
+        .product img {
+            max-width: 200px;
+        }
+        .cart-message {
+            color: green;
+        }
+        .add-to-cart {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .add-to-cart:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Products - Crystal Optics</h1>
+
+    <div class="product">
+        <img src="sunglasses.jpg" alt="Sunglasses">
+        <h2>Sunglasses</h2>
+        <p>Price: $50</p>
+        <button class="add-to-cart" onclick="addToCart('Sunglasses', 50)">Add to Cart</button>
+        <p class="cart-message" id="cart-message-1"></p>
+    </div>
+
+    <div class="product">
+        <img src="computer-glasses.jpg" alt="Computer Glasses">
+        <h2>Computer Glasses</h2>
+        <p>Price: $70</p>
+        <button class="add-to-cart" onclick="addToCart('Computer Glasses', 70)">Add to Cart</button>
+        <p class="cart-message" id="cart-message-2"></p>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(productName, price) {
+            // Create a cart item object
+            let cartItem = {
+                product: productName,
+                price: price,
+                quantity: 1
+            };
+
+            // Check if the item already exists in the cart
+            let existingItem = cart.find(item => item.product === productName);
+
+            if (existingItem) {
+                existingItem.quantity += 1; // Increase the quantity
+            } else {
+                cart.push(cartItem); // Add the new item
+            }
+
+            // Show confirmation message
+            alert('${productName} added to cart!');
+
+            // Update cart message on the page
+            // let messageElement = document.querySelector('#cart-message-${productName === 'Sunglasses' ? 1 : 2}');
+            messageElement.innerText = 'Added to Cart: ${cartItem.quantity} x ${productName} ($${price})';
+        }
+    </script>
+
+</body>
+</html>
